@@ -1,0 +1,23 @@
+[package]
+name = "luac"
+version = "0.1.0"
+edition = "2024"
+description = "Compile Lua 5.1 using a compiler-only subset of the official source"
+license = "MIT"
+readme = "README.md"
+keywords = ["lua", "lua51", "compiler", "bytecode"]
+categories = ["compilers"]
+links = "luac51"
+include = [
+    "Cargo.toml",
+    "Cargo.lock",
+    "build.rs",
+    "src/**",
+    "vendor/**",
+    "tests/**",
+    "README.md",
+    "LICENSE",
+]
+
+[build-dependencies]
+cc = "1"

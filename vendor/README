@@ -1,0 +1,29 @@
+Lua 5.1.5 — subconjunto do código-fonte oficial adaptado só para compilação.
+
+Origem: https://www.lua.org/ftp/lua-5.1.5.tar.gz
+SHA-256: 2640fc56a795f29d28ef15e13c34a47e223960b0240e8cb0a82d9b0738695333
+Licença: lua-5.1.5/COPYRIGHT
+
+São compilados 11 arquivos C: lcode, lcompiler, ldump, llex, lmem, lobject,
+lopcodes, lparser, lstring, ltable e lzio.
+
+O lexer, a gramática, a geração de instruções e o formato do bytecode são
+derivados do Lua 5.1.5 oficial. A saída mantém as informações de depuração.
+
+Adaptações locais:
+- lcompiler.c chama diretamente o parser e o escritor de bytecode. Reúne
+  inicialização de protótipos e tratamento de erros, sem criar closures.
+- lstate.h contém só o contexto de compilação. lmem.c rastreia alocações
+  para liberar tudo ao terminar, inclusive depois de erros de sintaxe/OOM.
+  Não há GC; strings e protótipos vivem até o fim de cada compilação.
+- lobject.c formata mensagens diretamente em C, sem stack ou concatenação
+  da VM. Foram removidos hooks de GC e tipos usados apenas na execução.
+- ldump.c mantém somente a escrita; incorpora o cabeçalho binário original.
+- Tabelas, streams, configurações e headers foram reduzidos ao necessário.
+
+Removidos lapi, lauxlib, ldebug, ldo, lfunc, lgc, lstate.c, ltm, lundump.c
+e lvm. Não há interpretador, chamadas Lua/C, corrotinas, metamétodos,
+bibliotecas padrão ou leitura de chunks compilados.
+
+O SHA-256 acima identifica o arquivo de origem, não os fontes adaptados.
+O código original pode ser recuperado pelo endereço informado.
