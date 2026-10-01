@@ -20,21 +20,9 @@ externa direta é `cc`, usada durante a compilação.
 
 ## Usar como dependência Git
 
-Depois de colocar este diretório na raiz do seu repositório GitHub, adicione
-ao `Cargo.toml` do projeto consumidor, substituindo `SEU_USUARIO/luac` pelo
-endereço do repositório criado:
-
 ```toml
 [dependencies]
-luac = { git = "https://github.com/SEU_USUARIO/luac.git" }
-```
-
-Para fixar uma revisão, acrescente `rev = "SHA_DO_COMMIT"` à dependência.
-Durante o desenvolvimento local, também é possível usar:
-
-```toml
-[dependencies]
-luac = { path = "../luac" }
+luac = { git = "https://github.com/leonardoaramaki/luac51-rs.git" }
 ```
 
 ```rust,no_run
@@ -71,60 +59,6 @@ O resultado é um chunk Lua 5.1 completo, com cabeçalho, instruções, constant
 protótipos e informações de depuração. Como no compilador original, usa os
 tamanhos de tipos e a ordem dos bytes da arquitetura em que é executado;
 não é um formato de bytecode independente de arquitetura.
-
-## Linha de comando
-
-Na raiz do repositório:
-
-```sh
-cargo run --release -- tests/fixtures/program.lua -o target/program.luac
-```
-
-Para instalar o comando a partir de uma cópia local:
-
-```sh
-cargo install --path . --locked
-luac main.lua -o main.luac
-```
-
-Sem `-o`, a saída usa o caminho de entrada com a extensão `.luac`. O comando
-salva o resultado de `compile_file()` e não executa o programa.
-
-## Verificação
-
-```sh
-cargo fmt --all -- --check
-cargo clippy --locked --all-targets -- -D warnings
-cargo test --locked
-cargo package --locked
-```
-
-O teste de compatibilidade é ignorado por padrão porque requer o interpretador
-e o compilador oficiais Lua 5.1. Para executá-lo, informe seus caminhos:
-
-```sh
-LUA51=/caminho/para/lua5.1 LUAC51=/caminho/para/luac5.1 \
-  cargo test --locked -- --include-ignored
-```
-
-Esse teste compara os bytes com o `luac` oficial e executa o resultado com o
-Lua 5.1. O teste nativo de falhas de alocação e escrita tem instruções em
-[tests/native/allocations.c](tests/native/allocations.c).
-
-A configuração de CI verifica o crate em Linux, macOS e Windows. Um job Linux
-também compila a distribuição oficial Lua 5.1.5 para a comparação, executa os
-testes nativos com sanitizadores e verifica a ausência de símbolos da VM.
-Esses downloads são exclusivos dos testes de compatibilidade.
-
-## Repositório independente
-
-Copie os arquivos deste diretório, incluindo `.github/`, `.gitignore`,
-`Cargo.lock` e `vendor/`, para a raiz do novo repositório. Exclua `target/`.
-Nenhum arquivo do projeto que contém esta pasta é necessário.
-
-O campo `repository` do `Cargo.toml` pode ser preenchido com a URL definitiva
-depois da criação do repositório. O uso como dependência Git não depende de
-publicação no crates.io.
 
 ## Origem e licença
 
